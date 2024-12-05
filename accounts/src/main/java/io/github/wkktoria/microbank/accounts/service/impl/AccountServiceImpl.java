@@ -1,10 +1,13 @@
 package io.github.wkktoria.microbank.accounts.service.impl;
 
 import io.github.wkktoria.microbank.accounts.constants.AccountConstants;
+import io.github.wkktoria.microbank.accounts.dto.AccountDto;
 import io.github.wkktoria.microbank.accounts.dto.CustomerDto;
 import io.github.wkktoria.microbank.accounts.entity.Account;
 import io.github.wkktoria.microbank.accounts.entity.Customer;
 import io.github.wkktoria.microbank.accounts.exception.CustomerAlreadyExistsException;
+import io.github.wkktoria.microbank.accounts.exception.ResourceNotFoundException;
+import io.github.wkktoria.microbank.accounts.mapper.AccountMapper;
 import io.github.wkktoria.microbank.accounts.mapper.CustomerMapper;
 import io.github.wkktoria.microbank.accounts.repository.AccountRepository;
 import io.github.wkktoria.microbank.accounts.repository.CustomerRepository;
@@ -41,6 +44,22 @@ public class AccountServiceImpl implements IAccountService {
 
         Customer savedCustomer = customerRepository.save(customer);
         accountRepository.save(createNewAccount(savedCustomer));
+    }
+
+    @Override
+    public CustomerDto fetchAccount(final String mobileNumber) {
+        final Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+
+        final Account account = accountRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
+        );
+
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccountDto(AccountMapper.mapToAccountDto(account, new AccountDto()));
+
+        return customerDto;
     }
 
     private Account createNewAccount(final Customer customer) {
