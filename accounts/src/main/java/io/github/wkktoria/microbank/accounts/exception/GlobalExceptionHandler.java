@@ -11,15 +11,20 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
+                                                                  WebRequest webRequest) {
+        final ErrorResponseDto errorResponseDto =
+                createErrorResponseDto(webRequest, HttpStatus.INTERNAL_SERVER_ERROR, exception);
+
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(CustomerAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(CustomerAlreadyExistsException exception,
                                                                                  WebRequest webRequest) {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.BAD_REQUEST,
-                exception.getMessage(),
-                LocalDateTime.now()
-        );
+        final ErrorResponseDto errorResponseDto =
+                createErrorResponseDto(webRequest, HttpStatus.BAD_REQUEST, exception);
 
         return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
     }
@@ -27,13 +32,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
                                                                             WebRequest webRequest) {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+        final ErrorResponseDto errorResponseDto =
+                createErrorResponseDto(webRequest, HttpStatus.NOT_FOUND, exception);
+
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    private ErrorResponseDto createErrorResponseDto(WebRequest webRequest, final HttpStatus httpStatus, Exception exception) {
+        return new ErrorResponseDto(
                 webRequest.getDescription(false),
-                HttpStatus.NOT_FOUND,
+                httpStatus,
                 exception.getMessage(),
                 LocalDateTime.now()
         );
-
-        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 }
