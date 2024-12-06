@@ -14,7 +14,6 @@ import io.github.wkktoria.microbank.accounts.repository.CustomerRepository;
 import io.github.wkktoria.microbank.accounts.service.IAccountService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -38,9 +37,6 @@ public class AccountServiceImpl implements IAccountService {
             throw new CustomerAlreadyExistsException("Customer with mobile number "
                     + customerDto.getMobileNumber() + " has been already registered.");
         }
-
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("Anonymous");
 
         Customer savedCustomer = customerRepository.save(customer);
         accountRepository.save(createNewAccount(savedCustomer));
@@ -110,8 +106,6 @@ public class AccountServiceImpl implements IAccountService {
         newAccount.setAccountNumber(randomAccountNumber);
         newAccount.setAccountType(AccountConstants.SAVINGS);
         newAccount.setBranchAddress(AccountConstants.ADDRESS);
-        newAccount.setCreatedAt(LocalDateTime.now());
-        newAccount.setCreatedBy("Anonymous");
 
         return newAccount;
     }
