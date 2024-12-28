@@ -1,6 +1,6 @@
 package io.github.wkktoria.microbank.accounts.controller;
 
-import io.github.wkktoria.microbank.accounts.constants.AccountConstants;
+import io.github.wkktoria.microbank.accounts.constants.AccountsConstants;
 import io.github.wkktoria.microbank.accounts.dto.CustomerDto;
 import io.github.wkktoria.microbank.accounts.dto.ErrorResponseDto;
 import io.github.wkktoria.microbank.accounts.dto.ResponseDto;
@@ -53,7 +53,7 @@ class AccountController {
         accountService.createAccount(customerDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ResponseDto(AccountConstants.STATUS_201, AccountConstants.MESSAGE_201));
+                .body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
     }
 
     @Operation(
@@ -103,12 +103,12 @@ class AccountController {
         if (isUpdated) {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new ResponseDto(AccountConstants.STATUS_200, AccountConstants.MESSAGE_200));
+                    .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
         }
 
         return ResponseEntity
                 .status(HttpStatus.EXPECTATION_FAILED)
-                .body(new ResponseDto(AccountConstants.STATUS_417, AccountConstants.MESSAGE_417_UPDATE));
+                .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_UPDATE));
     }
 
     @Operation(
@@ -136,11 +136,11 @@ class AccountController {
         if (isDeleted) {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new ResponseDto(AccountConstants.STATUS_200, AccountConstants.MESSAGE_200));
+                    .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
         }
 
         return ResponseEntity
                 .status(HttpStatus.EXPECTATION_FAILED)
-                .body(new ResponseDto(AccountConstants.STATUS_417, AccountConstants.MESSAGE_417_DELETE));
+                .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
     }
 }

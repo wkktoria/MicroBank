@@ -1,6 +1,6 @@
 package io.github.wkktoria.microbank.accounts.service.impl;
 
-import io.github.wkktoria.microbank.accounts.constants.AccountConstants;
+import io.github.wkktoria.microbank.accounts.constants.AccountsConstants;
 import io.github.wkktoria.microbank.accounts.dto.AccountDto;
 import io.github.wkktoria.microbank.accounts.dto.CustomerDto;
 import io.github.wkktoria.microbank.accounts.entity.Account;
@@ -104,8 +104,8 @@ public class AccountServiceImpl implements IAccountService {
         int randomAccountNumber = 1000000000 + new Random().nextInt(90000000);
 
         newAccount.setAccountNumber(randomAccountNumber);
-        newAccount.setAccountType(AccountConstants.SAVINGS);
-        newAccount.setBranchAddress(AccountConstants.ADDRESS);
+        newAccount.setAccountType(AccountsConstants.SAVINGS);
+        newAccount.setBranchAddress(AccountsConstants.ADDRESS);
 
         return newAccount;
     }
